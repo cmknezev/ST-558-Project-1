@@ -1,0 +1,14 @@
+---
+title: "Pokemon Data API Vignette"
+author: "Collin Knezevich"
+date: "6/19/2022"
+output: github_document
+---
+
+# Pokemon Data API Vignette 
+
+In this vignette, I will walk you through how to read data from [this Pokemon data API](https://pokeapi.co/). I will be creating functions to easily query data from the API, in such a way that it will be easy to call the function and query specific data.   
+
+## Required Packages 
+
+In order to query data from the Pokemon API, we will need the following packages:
