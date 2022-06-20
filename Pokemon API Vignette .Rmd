@@ -11,4 +11,67 @@ In this vignette, I will walk you through how to read data from [this Pokemon da
 
 ## Required Packages 
 
-In order to query data from the Pokemon API, we will need the following packages:
+In order to query data from the Pokemon API, we will need the following packages: 
+
+- `tidyverse` 
+- `httr`
+- `jsonlite` 
+
+```{r, echo = FALSE, eval = TRUE}
+# libraries 
+library(tidyverse)
+library(httr)
+library(jsonlite)
+```
+
+## Functions 
+
+### Species Function 
+
+The `returnPkmnSpecies` function takes in either the ID number of a Pokemon, or the name of a Pokemon, as its input. It will return a data frame with the following particularly relevant information from the API:   
+- *Name:* the name of the Pokemon 
+- *ID:* the ID number of the Pokemon 
+- *Gen:* the generation in which the Pokemon first appeared 
+- *PreEvo:* the Pokemon from which the queried Pokemon evolved from (returns NULL if no pre-evolution) 
+- *EggGrp:* the egg group of the Pokemon 
+- *Legendary:* a boolean to say whether or not the Pokemon is a legendary 
+- *Mythical:* a boolean to say whether or not the Pokemon is a mythical
+
+```{r}
+# Pokemon species function 
+returnPkmnSpecies <- function(idName){ 
+  # set up URL for paste functions 
+  startURL <- "https://pokeapi.co/api/v2/pokemon-species/"
+  endURL <- "/"
+  
+  # if id specified 
+  if (typeof(idName) == "double"){ 
+    apiDat <- GET(paste0(startURL, as.character(idName), endURL)) 
+    rawDat <- rawToChar(apiDat$content) 
+    fullDat <- fromJSON(rawDat) 
+  } 
+  
+  # if name specified 
+  else if (typeof(idName) == "character"){ 
+    name <- tolower(idName) 
+    apiDat <- GET(paste0(startURL, name, endURL)) 
+    rawDat <- rawToChar(apiDat$content) 
+    fullDat <- fromJSON(rawDat) 
+  } 
+  
+  # error control - if input improperly specified 
+  else { 
+    stop("Input incorrectly speficied.")
+  } 
+  
+  # constructing data frame with relevant information 
+  df <- data.frame(Name = fullDat$name, 
+                   ID = fullDat$id,  
+                   Gen = fullDat$generation$name, 
+                   PreEvo = fullDat$evolves_from_species$name, 
+                   EggGrp = fullDat$egg_groups$name, 
+                   Legendary = fullDat$is_legendary, 
+                   Mythical = fullDat$is_mythical) 
+  return(df)
+}
+```
