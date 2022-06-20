@@ -26,6 +26,63 @@ library(jsonlite)
 
 ## Functions 
 
+### Pokemon Function 
+
+The Pokemon API stores data about a specific Pokemon in two different places (both containing different info): a general "Pokemon" location, and a "Pokemon Species" location. This first function will query data from the former.   
+
+The `returnPkmn` function takes either the ID number of a Pokemon, or the name of a Pokemon (as a string), as its input. It will return a data frame with the following relevant information from this location in the API: 
+- *Name:* the name of the Pokemon 
+- *ID:* the ID number of the Pokemon 
+- *Type1:* the primary type of the Pokemon 
+- *Type2:* the secondary type of the Pokemon, if applicable (will return NA if Pokemon does not have secondary type) 
+- *HP:* base HP stat 
+- *Attack:* base Attack stat 
+- *Defense:* base Defense stat 
+- *SpAttack:* base Special Attack stat 
+- *SpDefense:* base Special Defense stat 
+- *Speed:* base Speed stat
+
+```{r}
+returnPkmn <- function(idName){ 
+  # set up URL for paste functions 
+  startURL <- "https://pokeapi.co/api/v2/pokemon/" 
+  endURL <- "/" 
+  
+  # if id specified 
+  if (typeof(idName) == "double"){ 
+    apiDat <- GET(paste0(startURL, as.character(idName), endURL)) 
+    rawDat <- rawToChar(apiDat$content) 
+    fullDat <- fromJSON(rawDat) 
+  } 
+  
+  # if name specified 
+  else if (typeof(idName) == "character"){ 
+    name <- tolower(idName) 
+    apiDat <- GET(paste0(startURL, name, endURL)) 
+    rawDat <- rawToChar(apiDat$content) 
+    fullDat <- fromJSON(rawDat) 
+  } 
+  
+  # error control - if input improperly specified 
+  else { 
+    stop("Input incorrectly specified.") 
+  } 
+  
+  # constructing data frame with relevant information 
+  df <- data.frame(Name = fullDat$name, 
+                   ID = fullDat$id, 
+                   Type1 = fullDat$types$type$name[1],
+                   Type2 = fullDat$types$type$name[2],
+                   HP = fullDat$stats$base_stat[1], 
+                   Attack = fullDat$stats$base_stat[2], 
+                   Defense = fullDat$stats$base_stat[3], 
+                   SpAttack = fullDat$stats$base_stat[4], 
+                   SpDefense = fullDat$stats$base_stat[5], 
+                   Speed = fullDat$stats$base_stat[6]) 
+  return(df) 
+}
+```
+
 ### Species Function 
 
 The `returnPkmnSpecies` function takes in either the ID number of a Pokemon, or the name of a Pokemon, as its input. It will return a data frame with the following particularly relevant information from the API:   
