@@ -170,3 +170,100 @@ returnMove <- function(move){
 }
 ```
 
+### Location Function 
+
+The `returnLocation` function will take in the name of a location (as a string) as its input, and wil return the following information about the location: 
+- *Location:* the name of the location 
+- *Region:* the region in which the location is located 
+- *Generation:* the generation in which the location first appeared
+
+```{r}
+returnLocation <- function(name){ 
+  # convert input to lowercase, and replace spaces with -'s
+  name <- tolower(name) 
+  name <- gsub(" ", "-", name) 
+  
+  # set up URL for paste functions 
+  startURL <- "https://pokeapi.co/api/v2/location/"
+  endURL <- "/" 
+  
+  apiDat <- GET(paste0(startURL, name, endURL)) 
+  rawDat <- rawToChar(apiDat$content) 
+  fullDat <- fromJSON(rawDat) 
+  
+  df <- data.frame(Location = fullDat$name, 
+                   Region = fullDat$region$name, 
+                   Generation = fullDat$game_indices$generation$name) 
+  return(df)
+}
+```
+
+### Item Function 
+
+The `returnItem` function will take in either the ID number for an item, or the name of an item (as a string), as its input. It will return the following information about the item: 
+- *Item:* the name of the item 
+- *Cost:* how much the item costs, if applicable
+- *Type:* the use or category of the item 
+- *Effect:* short explanation of what the item does 
+
+```{r}
+returnItem <- function(idName){ 
+  # set up URL for paste functions 
+  startURL <- "https://pokeapi.co/api/v2/item/" 
+  endURL <- "/" 
+  
+  # if id specified 
+  if (typeof(idName) == "double"){ 
+    apiDat <- GET(paste0(startURL, as.character(idName), endURL)) 
+    rawDat <- rawToChar(apiDat$content) 
+    fullDat <- fromJSON(rawDat) 
+  } 
+  
+  # if name specified
+  else if (typeof(idName) == "character"){ 
+    name <- tolower(idName) 
+    name <- gsub(" ", "-", name) 
+    apiDat <- GET(paste0(startURL, name, endURL)) 
+    rawDat <- rawToChar(apiDat$content) 
+    fullDat <- fromJSON(rawDat) 
+  } 
+  
+  # error control if input improperly specified 
+  else { 
+    stop("Input improperly specified.") 
+  } 
+  
+  df <- data.frame(Item = fullDat$name, 
+                   Cost = fullDat$cost, 
+                   Type = fullDat$category$name, 
+                   Effect = fullDat$effect_entries$short_effect)
+  return(df)
+}
+```
+
+### Technical Machines Function 
+
+Technical Machines (TMs) are items you can use to teach your Pokemon a move - the `returnTM` function will take the ID number for a TM as its input, and will return the following information about the TM: 
+- *ID:* the ID number associated with this TM 
+- *Name:* the name of the TM 
+- *Move:* the move taught by the TM 
+- *Game:* the game in which the TM appears
+
+```{r}
+returnTM <- function(id){ 
+  # set up URL for paste functions 
+  startURL <- "https://pokeapi.co/api/v2/machine/"
+  endURL <- "/" 
+  
+  apiDat <- GET(paste0(startURL, as.character(id), endURL)) 
+  rawDat <- rawToChar(apiDat$content)
+  fullDat <- fromJSON(rawDat) 
+  
+  df <- data.frame(ID = fullDat$id, 
+                   Name = fullDat$item$name, 
+                   Move = fullDat$move$name, 
+                   Game = fullDat$version_group$name) 
+  return(df)
+}
+```
+
