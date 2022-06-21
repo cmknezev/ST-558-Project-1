@@ -132,3 +132,41 @@ returnPkmnSpecies <- function(idName){
   return(df)
 }
 ```
+
+### Move Function 
+
+The `returnMove` function will take in a move (as a string) as its input, and will return the following information about the move: 
+- *Move:* the name of the move 
+- *Power:* the base power of the move (0 if move does not deal damage) 
+- *Accuracy:* accuracy of the move - % chance of landing 
+- *PP:* the PP of the move - # of times move can be used 
+- *Priority:* the priority of the move, which determines if the move goes sooner/later than normal 
+- *Type:* the type of the move 
+- *DmgType:* the type of damage dealt by the move: physical, special, or status 
+
+```{r}
+# Move function 
+returnMove <- function(move){ 
+  # convert input to lowercase, and replace spaces with dashes 
+  move <- tolower(move) 
+  move <- gsub(" ", "-", move) 
+  
+  # set up URL for paste functions 
+  startURL <- "https://pokeapi.co/api/v2/move/"
+  endURL <- "/"  
+  
+  apiDat <- GET(paste0(startURL, move, endURL)) 
+  rawDat <- rawToChar(apiDat$content) 
+  fullDat <- fromJSON(rawDat) 
+  
+  df <- data.frame(Move = fullDat$name, 
+                   Power = ifelse(is.null(fullDat$power), 0, fullDat$power),
+                   Accuracy = fullDat$accuracy, 
+                   PP = fullDat$pp, 
+                   Priority = fullDat$priority, 
+                   Type = fullDat$type$name, 
+                   DmgType = fullDat$damage_class$name) 
+  return(df)
+}
+```
+
