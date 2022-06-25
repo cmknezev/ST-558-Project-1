@@ -7,17 +7,19 @@ output: github_document
 
 # Pokemon Data API Vignette 
 
-In this vignette, I will walk you through how to read data from [this Pokemon data API](https://pokeapi.co/). I will be creating functions to easily query data from the API, in such a way that it will be easy to call the function and query specific data.   
+In this vignette, I will walk you through how to read data from [this Pokemon data API](https://pokeapi.co/). I will be creating functions to easily query data from the API, in such a way that it will be easy to call the function and query specific data.      
+
+Additionally, [here](https://github.com/cmknezev/ST-558-Project-1) is the link to my Github repository. 
 
 ## Required Packages 
 
-In order to query data from the Pokemon API, we will need the following packages: 
+In order to query data from the Pokemon API, we will need the following packages:    
 
-- `tidyverse` 
-- `httr`
-- `jsonlite` 
+- `tidyverse`     
+- `httr`   
+- `jsonlite`    
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE, message = FALSE}
 # libraries 
 library(tidyverse)
 library(httr)
@@ -28,19 +30,19 @@ library(jsonlite)
 
 ### Pokemon Function 
 
-The Pokemon API stores data about a specific Pokemon in two different places (both containing different info): a general "Pokemon" location, and a "Pokemon Species" location. This first function will query data from the former.   
+The Pokemon API stores data about a specific Pokemon in two different places (both containing different info): a general "Pokemon" location, and a "Pokemon Species" location. This first function will query data from the former.     
 
-The `returnPkmn` function takes either the ID number of a Pokemon, or the name of a Pokemon (as a string), as its input. It will return a data frame with the following relevant information from this location in the API: 
-- *Name:* the name of the Pokemon 
-- *ID:* the ID number of the Pokemon 
-- *Type1:* the primary type of the Pokemon 
-- *Type2:* the secondary type of the Pokemon, if applicable (will return NA if Pokemon does not have secondary type) 
-- *HP:* base HP stat 
-- *Attack:* base Attack stat 
-- *Defense:* base Defense stat 
-- *SpAttack:* base Special Attack stat 
-- *SpDefense:* base Special Defense stat 
-- *Speed:* base Speed stat
+The `returnPkmn` function takes either the ID number of a Pokemon, or the name of a Pokemon (as a string), as its input. It will return a data frame with the following relevant information from this location in the API:     
+- *Name:* the name of the Pokemon     
+- *ID:* the ID number of the Pokemon     
+- *Type1:* the primary type of the Pokemon     
+- *Type2:* the secondary type of the Pokemon, if applicable (will return NA if Pokemon does not have secondary type)     
+- *HP:* base HP stat     
+- *Attack:* base Attack stat     
+- *Defense:* base Defense stat     
+- *SpAttack:* base Special Attack stat     
+- *SpDefense:* base Special Defense stat     
+- *Speed:* base Speed stat      
 
 ```{r}
 returnPkmn <- function(idName){ 
@@ -85,15 +87,15 @@ returnPkmn <- function(idName){
 
 ### Species Function 
 
-The `returnPkmnSpecies` function takes in either the ID number of a Pokemon, or the name of a Pokemon, as its input. It will return a data frame with the following particularly relevant information from the API:   
-- *Name:* the name of the Pokemon 
-- *ID:* the ID number of the Pokemon 
-- *Gen:* the generation in which the Pokemon first appeared 
-- *PreEvo:* the Pokemon from which the queried Pokemon evolved from (returns NA if no pre-evolution) 
-- *EggGrp1:* the first egg group of the Pokemon 
-- *EggGrp2:* the second egg group of the Pokemon, if applicable
-- *Legendary:* a boolean to say whether or not the Pokemon is a legendary 
-- *Mythical:* a boolean to say whether or not the Pokemon is a mythical
+The `returnPkmnSpecies` function takes in either the ID number of a Pokemon, or the name of a Pokemon, as its input. It will return a data frame with the following particularly relevant information from the API:      
+- *Name:* the name of the Pokemon     
+- *ID:* the ID number of the Pokemon     
+- *Gen:* the generation in which the Pokemon first appeared     
+- *PreEvo:* the Pokemon from which the queried Pokemon evolved from (returns NA if no pre-evolution)     
+- *EggGrp1:* the first egg group of the Pokemon     
+- *EggGrp2:* the second egg group of the Pokemon, if applicable     
+- *Legendary:* a boolean to say whether or not the Pokemon is a legendary     
+- *Mythical:* a boolean to say whether or not the Pokemon is a mythical     
 
 ```{r}
 # Pokemon species function 
@@ -138,14 +140,14 @@ returnPkmnSpecies <- function(idName){
 
 ### Move Function 
 
-The `returnMove` function will take in a move (as a string) as its input, and will return the following information about the move: 
-- *Move:* the name of the move 
-- *Power:* the base power of the move (0 if move does not deal damage) 
-- *Accuracy:* accuracy of the move - % chance of landing 
-- *PP:* the PP of the move - # of times move can be used 
-- *Priority:* the priority of the move, which determines if the move goes sooner/later than normal 
-- *Type:* the type of the move 
-- *DmgType:* the type of damage dealt by the move: physical, special, or status 
+The `returnMove` function will take in a move (as a string) as its input, and will return the following information about the move:     
+- *Move:* the name of the move     
+- *Power:* the base power of the move (0 if move does not deal damage)     
+- *Accuracy:* accuracy of the move - % chance of landing     
+- *PP:* the PP of the move - # of times move can be used     
+- *Priority:* the priority of the move, which determines if the move goes sooner/later than normal     
+- *Type:* the type of the move     
+- *DmgType:* the type of damage dealt by the move: physical, special, or status     
 
 ```{r}
 # Move function 
@@ -175,10 +177,10 @@ returnMove <- function(move){
 
 ### Location Function 
 
-The `returnLocation` function will take in the name of a location (as a string) as its input, and wil return the following information about the location: 
-- *Location:* the name of the location 
-- *Region:* the region in which the location is located 
-- *Generation:* the generation in which the location first appeared
+The `returnLocation` function will take in the name of a location (as a string) as its input, and wil return the following information about the location:      
+- *Location:* the name of the location     
+- *Region:* the region in which the location is located      
+- *Generation:* the generation in which the location first appeared      
 
 ```{r}
 returnLocation <- function(name){ 
@@ -203,11 +205,11 @@ returnLocation <- function(name){
 
 ### Item Function 
 
-The `returnItem` function will take in either the ID number for an item, or the name of an item (as a string), as its input. It will return the following information about the item: 
-- *Item:* the name of the item 
-- *Cost:* how much the item costs, if applicable
-- *Type:* the use or category of the item 
-- *Effect:* short explanation of what the item does 
+The `returnItem` function will take in either the ID number for an item, or the name of an item (as a string), as its input. It will return the following information about the item:   
+- *Item:* the name of the item     
+- *Cost:* how much the item costs, if applicable    
+- *Type:* the use or category of the item      
+- *Effect:* short explanation of what the item does      
 
 ```{r}
 returnItem <- function(idName){ 
@@ -246,11 +248,11 @@ returnItem <- function(idName){
 
 ### Technical Machines Function 
 
-Technical Machines (TMs) are items you can use to teach your Pokemon a move - the `returnTM` function will take the ID number for a TM as its input, and will return the following information about the TM: 
-- *ID:* the ID number associated with this TM 
-- *Name:* the name of the TM 
-- *Move:* the move taught by the TM 
-- *Game:* the game in which the TM appears
+Technical Machines (TMs) are items you can use to teach your Pokemon a move - the `returnTM` function will take the ID number for a TM as its input, and will return the following information about the TM:     
+- *ID:* the ID number associated with this TM      
+- *Name:* the name of the TM      
+- *Move:* the move taught by the TM       
+- *Game:* the game in which the TM appears       
 
 ```{r}
 returnTM <- function(id){ 
@@ -272,10 +274,10 @@ returnTM <- function(id){
 
 ## EDA 
 
-Throughout this Exploratory Data Analysis exercise, I will be comparing the attributes of Pokemon across different "eras" of Pokemon games. The eras are defined as follows: 
-- *Era 1:* Games released on the Game Boy (Generations 1-3) 
-- *Era 2:* Games released on the DS (Generations 4 & 5) 
-- *Era 3:* Games released on the 3DS or Switch (Generations 6-8)  
+Throughout this Exploratory Data Analysis exercise, I will be comparing the attributes of Pokemon across different "eras" of Pokemon games. The eras are defined as follows:      
+- *Era 1:* Games released on the Game Boy (Generations 1-3)      
+- *Era 2:* Games released on the DS (Generations 4 & 5)       
+- *Era 3:* Games released on the 3DS or Switch (Generations 6-8)        
 
 ### Data Preparation
 
@@ -319,7 +321,7 @@ First, we will create a table to show how many Pokemon are in each Era that we h
 ```{r}
 table(allPkmn$Era)
 ```
-The table shows us that there are fewer Pokemon in each new Era. It is notable that Era 2 had more Pokemon introduced than Era 3, despite only spanning two generations rather than three. 
+The table shows us that there are fewer Pokemon in each new Era. It is notable that Era 2 had more Pokemon introduced than Era 3, despite only spanning two generations rather than three.     
 
 Next, we will create a table to show the number of Legendary Pokemon in each Era. 
 ```{r}
@@ -334,14 +336,14 @@ We will continue our analysis by comparing some numeric variables across the dif
 allPkmn %>% group_by(Era) %>% summarise(avg = mean(BST), med = median(BST), 
                                         sd = sd(BST))
 ```
-Both the mean and median BSTs increase with each new Era. Notably, the median BSTs for Eras 2 and 3 are much higher than the median BST for Era 1. This could indicate that overall, most newer Pokemon are stronger than those from the first Era. 
+Both the mean and median BSTs increase with each new Era. Notably, the median BSTs for Eras 2 and 3 are much higher than the median BST for the first Era. This could indicate that overall, most newer Pokemon are stronger than those from the first Era.      
 
 Next, we will compare specifically the Speed stat across the different Eras. 
 ```{r}
 allPkmn %>% group_by(Era) %>% summarise(avg = mean(Speed), med = median(Speed), 
                                         sd = sd(Speed))
 ```
-This comparison reveals that the Speed of Pokemon across the different Eras is more or less the same. 
+This comparison reveals that the Speed of Pokemon across the different Eras is more or less the same.      
 
 Finally, we will compare the BSTs of Pokemon across different primary Types. We will sort the output by mean BST so that the table is easier to understand.
 ```{r}
@@ -349,7 +351,7 @@ allPkmn %>% group_by(Type1) %>% summarise(avg = mean(BST), med = median(BST),
                                         sd = sd(BST)) %>% 
   arrange(desc(avg))
 ```
-The output shows that the Dragon type has the highest average BST, while the Bug type has the lowest average BST. This tells us that Dragon types are, overall, much stronger than Bug types (and are a good bit stronger than most other types, as well). 
+The output shows that the Dragon type has the highest average BST, while the Bug type has the lowest average BST. This tells us that Dragon types are, overall, much stronger than Bug types (and are a good bit stronger than most other types, as well).      
 
 ### Visualizations 
 
@@ -359,7 +361,7 @@ ggplot(data = allPkmn, aes(x = Era)) +
   geom_bar(aes(fill = Legendary), position = "fill") + 
   labs(title = "Proportion of Legendary Pokemon for Each Era", y = "Proportion")
 ```
-Despite the overall low proportion of Legendary Pokemon across all Eras, it is clear that the proportion of Legendary Pokemon is increasing with each Era. 
+Despite the overall low proportion of Legendary Pokemon across all Eras, it is clear that the proportion of Legendary Pokemon is increasing with each Era.       
 
 Next, we will create a histogram to show the distribution of BSTs across the different Eras. 
 ```{r}
@@ -368,7 +370,7 @@ ggplot(data = allPkmn, aes(x = BST, y = ..density..)) +
   facet_grid(~ Era) + 
   labs(title = "Histograms of BSTs by Era", y = "Density", x = "Base Stat Total")
 ```
-The distributions of BSTs for each Era appear to be bimodal. However, even though we have seen that the mean and median BSTs for each Era are different, the overall distributions shown in the histograms do not appear to be so different. 
+The distributions of BSTs for each Era appear to be bimodal. However, even though we have seen that the mean and median BSTs for each Era are different, the overall distributions shown in the histograms do not appear to be so different.       
 
 Now, we will create a kernel density plot to show this same distribution. 
 ```{r}
@@ -377,7 +379,7 @@ ggplot(data = allPkmn, aes(x = BST, color = as.factor(Era))) +
   labs(title = "Kernel Density Plot of BSTs by Era", x = "Base Stat Totals", 
        y = "Density", color = "Era")
 ```
-The kernel density plots of the BSTs show the same bimodal pattern as the histograms. Additionally, the relationship between Era and BSTs is easier to see in this graph. In the distribution of BSTs for Era 1, the second peak is shifted to the left of the other distributions, and is a lower peak. Also, in the distribution of BSTs for Era 3, the first peak is lower tha the other distributions. 
+The kernel density plots of the BSTs show the same bimodal pattern as the histograms. Additionally, the relationship between Era and BSTs is easier to see in this graph. In the distribution of BSTs for Era 1, the second peak is shifted to the left of the other distributions, and is a lower peak. Also, in the distribution of BSTs for Era 3, the first peak is lower tha the other distributions.       
 
 Next, we will create a box plot to further visualize this distribution, and potentially locate any outliers. 
 ```{r}
@@ -387,7 +389,7 @@ ggplot(data = allPkmn, aes(x = as.factor(Era), y = BST)) +
   labs(title = "Boxplot of BSTs by Era", x = "Era", color = "Era", 
        y = "Base Stat Total")
 ```
-The boxplots show that the median BSTs, and overall distributions, are shifted upwards for the second two Eras compared to the first. Additionally, there do not appear to be any outliers present in the data. Another tangential yet interesting observation is that there appears to be many Pokemon concentrated at a BST of exactly 600, as well as another concentration at approximately 575. 
+The boxplots show that the median BSTs, and overall distributions, are shifted upwards for the second two Eras compared to the first. Additionally, there do not appear to be any outliers present in the data. Another tangential yet interesting observation is that there appears to be many Pokemon concentrated at a BST of exactly 600, as well as another concentration at approximately 575.       
 
 Finally, we will create a scatterplot to show the relationship between Speed and Defense. We will also color the observations by Era. 
 ```{r}
@@ -397,3 +399,11 @@ ggplot(data = allPkmn, aes(x = Speed, y = Defense)) +
   labs(title = "Scatterplot: Speed vs. Defense", color = "Era")
 ```
 There is no relationship between Speed and Defense - as a Pokemon's speed increases, its defense does not tend to increase nor decrease. 
+
+# Reflections 
+
+This was an fun project to work on and I enjoyed the process of it. One of the most difficult parts of the project was querying data from the API. I did not find that the documentation for this particular API was tremendously helpful in explaining how to make more specific queries. Still, the documentation was helpful in explaining the variables you can query from each endpoint, and how those sets of data are related.      
+
+Another point of difficulty was with Github pages and getting that set up properly. I think I just need more experience with this to become more comfortable with it.      
+
+In the future, I would probably look into more creative ways to combine data from the different endpoints. I believe it could lead to some interesting analysis. 
