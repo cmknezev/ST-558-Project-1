@@ -19,7 +19,7 @@ In order to query data from the Pokemon API, we will need the following packages
 - `httr`   
 - `jsonlite`    
 
-```{r, echo = FALSE, eval = TRUE, message = FALSE}
+```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 # libraries 
 library(tidyverse)
 library(httr)
@@ -370,6 +370,7 @@ ggplot(data = allPkmn, aes(x = BST, y = ..density..)) +
   facet_grid(~ Era) + 
   labs(title = "Histograms of BSTs by Era", y = "Density", x = "Base Stat Total")
 ```
+
 The distributions of BSTs for each Era appear to be bimodal. However, even though we have seen that the mean and median BSTs for each Era are different, the overall distributions shown in the histograms do not appear to be so different.       
 
 Now, we will create a kernel density plot to show this same distribution. 
@@ -379,6 +380,7 @@ ggplot(data = allPkmn, aes(x = BST, color = as.factor(Era))) +
   labs(title = "Kernel Density Plot of BSTs by Era", x = "Base Stat Totals", 
        y = "Density", color = "Era")
 ```
+
 The kernel density plots of the BSTs show the same bimodal pattern as the histograms. Additionally, the relationship between Era and BSTs is easier to see in this graph. In the distribution of BSTs for Era 1, the second peak is shifted to the left of the other distributions, and is a lower peak. Also, in the distribution of BSTs for Era 3, the first peak is lower tha the other distributions.       
 
 Next, we will create a box plot to further visualize this distribution, and potentially locate any outliers. 
@@ -389,6 +391,7 @@ ggplot(data = allPkmn, aes(x = as.factor(Era), y = BST)) +
   labs(title = "Boxplot of BSTs by Era", x = "Era", color = "Era", 
        y = "Base Stat Total")
 ```
+
 The boxplots show that the median BSTs, and overall distributions, are shifted upwards for the second two Eras compared to the first. Additionally, there do not appear to be any outliers present in the data. Another tangential yet interesting observation is that there appears to be many Pokemon concentrated at a BST of exactly 600, as well as another concentration at approximately 575.       
 
 Finally, we will create a scatterplot to show the relationship between Speed and Defense. We will also color the observations by Era. 
@@ -398,6 +401,7 @@ ggplot(data = allPkmn, aes(x = Speed, y = Defense)) +
   geom_smooth(method = lm) + 
   labs(title = "Scatterplot: Speed vs. Defense", color = "Era")
 ```
+
 There is no relationship between Speed and Defense - as a Pokemon's speed increases, its defense does not tend to increase nor decrease. 
 
 # Reflections 
